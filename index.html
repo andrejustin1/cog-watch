@@ -43,11 +43,13 @@ fbq('init','1552562793581687');fbq('track','PageView');
   var ANDROID = 'intent://app.primevideo.com/detail?gti=' + GTI +
     '#Intent;scheme=https;package=com.amazon.avod.thirdpartyclient;S.browser_fallback_url=' +
     encodeURIComponent(WEB) + ';end';
-  // iPhone: the Prime Video app's own link scheme. If the app isn't installed nothing happens,
-  // so we fall back to Amazon's website after a short wait.
-  var IOS = 'aiv://app.primevideo.com/detail?gti=' + GTI;
+  // iPhone: the Prime Video app's own link scheme (tested on iPhone: lands on the movie's page).
+  // If the app isn't installed nothing happens, so we fall back to Amazon's website after a short wait.
+  var IOS = 'aiv://aiv/detail?gti=' + GTI;
+  // iPhone button: Prime Video's web link opens the app on a tap, and shows the web page if the app is missing.
+  var IOS_TAP = 'https://app.primevideo.com/detail?gti=' + GTI;
   var appLink = isAndroid ? ANDROID : isIOS ? IOS : WEB;
-  document.getElementById('app').href = appLink;
+  document.getElementById('app').href = isIOS ? IOS_TAP : appLink;
 
   function track(name) { try { fbq('trackCustom', name, { platform: isAndroid ? 'android' : isIOS ? 'ios' : 'desktop' }); } catch (e) {} }
   document.getElementById('app').addEventListener('click', function () { track('OpenPrimeVideoApp'); });
